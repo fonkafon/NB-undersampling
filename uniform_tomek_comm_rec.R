@@ -1,5 +1,4 @@
 source("setup_edit.R")
-#source("fitTest.R")
 source("fitTest_svm.R")
 source("fitResult_imb.R")
 source('writeAppend.R')
@@ -36,7 +35,7 @@ for (j in 1:endJ){
     
     #partition - testing/training
     set.seed(seed)
-    dPart <- datPartition(df, 0.7)
+    dPart <- datPartition(df, 0.8)
     train <- dPart[[1]]
     test <- dPart[[2]]
   
