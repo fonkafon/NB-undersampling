@@ -2,10 +2,10 @@ source("setup_edit.R")    #setwd, load all files into dfAll
 source("fitTest_svm.R")
 source("fitResult_imb.R")
 source('writeAppend.R')
-source('searchKnn_UnderS.R')
-#source('searchKnn_UnderS_Tomek.R')
-#source('searchKnn_UnderS_Common.R')
-#source('searchKnn_UnderS_Recursive.R')
+#source('searchKnn_UnderS.R') #uncomment this line for NB-Basic
+#source('searchKnn_UnderS_Tomek.R') #uncomment this line for NB-Tomek
+#source('searchKnn_UnderS_Common.R') #uncomment this line for NB-Comm
+#source('searchKnn_UnderS_Recursive.R') #uncomment this line for NB-Rec
 library(ggplot2)
 library(DMwR)
 source('makeData_imb2_10042019.R')
@@ -36,22 +36,15 @@ for (j in 1:endJ){
     N <- nrow(df[df$label == 'negative',])
     imb <- N/P
     
-    resultOrg <- fitResult(train,test)
-    resultOrg <- rbind(data = i,resultOrg,imb, samples =nrow(train))
-    ifelse(i == 1, allResultOrg <- resultOrg,
-           allResultOrg <- cbind(allResultOrg, resultOrg))
-    
     k<-sqrt(nrow(train))+sqrt(imb)
     train <- searchKnn(train,k)
-    trainOrg <- train
+    
     tmpN <- train[(train$probN==1)&(train$label=='negative'),] 
     tmpP <- train[train$label=='positive',]
     train <- rbind(tmpP,tmpN)
     
     train$probP <- NULL
     train$probN <- NULL
-    trainOrg$probP <- NULL
-    trainOrg$probN <- NULL
    
     #fit model after undersampling
     resultUnder <- fitResult(train,test)
@@ -62,6 +55,5 @@ for (j in 1:endJ){
     cat(paste0('\n',i,' finished','\n')) 
   }
   cat(paste0('\n',j,' finished','\n'))
-  writeAppend('orgPerf_sim_16Apr19_svmRadial',t(allResultOrg),1)
   writeAppend('knn_sim_Basic_sqrtImb+sqrtN_16Apr19_svmRadial',t(allResultUnder),1)
 }  
