@@ -14,13 +14,13 @@ library(ggplot2)
 seed <- 1987
 
 #vary imb ratio
-endJ <- 5
+endJ <- 6
 imbalance <- c(1.5,3,12,30,60,120)  
 for (j in 1:endJ){
   imb <- imbalance[j]
   #run over 0-100% overlap (101 runs)
-  endI <- 11 #11
-  for (i in 11:endI){
+  endI <- 11 
+  for (i in 1:endI){
     ovPercent <- (i-1)*10
     df <- makeData(ovPercent, imb, endI)
     k <- length(df) 
@@ -28,7 +28,7 @@ for (j in 1:endJ){
     
     #partition - testing/training
     set.seed(seed)
-    dPart <- datPartition(df, 0.7)
+    dPart <- datPartition(df, 0.8)
     train <- dPart[[1]]
     test <- dPart[[2]]
     
@@ -53,7 +53,7 @@ for (j in 1:endJ){
     trainOrg$probP <- NULL
     trainOrg$probN <- NULL
    
-    #fit RF after undersampling
+    #fit model after undersampling
     resultUnder <- fitResult(train,test)
     resultUnder <- rbind(data = i,resultUnder,imb, samples= nrow(train),
                          maj=maj, min = min)
@@ -61,7 +61,7 @@ for (j in 1:endJ){
            allResultUnder <- cbind(allResultUnder, resultUnder))  
     cat(paste0('\n',i,' finished','\n')) 
   }
- 
+  cat(paste0('\n',j,' finished','\n'))
   writeAppend('orgPerf_sim_16Apr19_svmRadial',t(allResultOrg),1)
   writeAppend('knn_sim_Basic_sqrtImb+sqrtN_16Apr19_svmRadial',t(allResultUnder),1)
 }  
