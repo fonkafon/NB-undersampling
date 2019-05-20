@@ -17,7 +17,7 @@ ovPercent<-0
 #run through all datasets 
 for (i in 1:numDat){
   j <- c(1,4,5,6,7,8,9,14,15,16,20,21,23,24,25,28,29,32,33,36,39,41,42,44)
-  df <- loadIndFile('Data/C', j[i])
+  df <- loadIndFile('Data/C', j[i])   #change the path to where you store your datasets
   set.seed(seed)
   dPart <- datPartition(df, 0.8)
   train <- dPart[[1]]
