@@ -1,5 +1,6 @@
 source("setup_edit.R")    #setwd, load all files into dfAll
-source("fitTest_svm.R")
+#source("fitTest_svm.R") #uncomment this line to use SVM classifier
+#source("fitTest_rf.R") #uncomment this line to use RF classifier
 source("fitResult_imb.R")
 source('writeAppend.R')
 #source('searchKnn_UnderS.R') #uncomment this line for NB-Basic
